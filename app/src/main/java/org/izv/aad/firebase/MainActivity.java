@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         firebaseDatabase.setPersistenceEnabled(true);
-        //createUser("izvdamdaw@gmail.com", "abcdef");
         signIn("abc@abc.es", "abcdef");
         //saveItem(i);
         //saveItem(i, "/data/");
