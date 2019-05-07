@@ -111,7 +111,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeReference(DatabaseReference reference) {
-        reference.removeValue();
+        reference.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Log.v(TAG, databaseError.toString());
+                }
+            }
+        });
     }
 
     public void resetPassword(String email) {
@@ -219,7 +226,9 @@ public class MainActivity extends AppCompatActivity {
         reference.setValue(item, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-
+                if (databaseError != null) {
+                    Log.v(TAG, databaseError.toString());
+                }
             }
         });
     }
