@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot,
                                      @Nullable String s) {
+                DatabaseReference reference = dataSnapshot.getRef();
                 Item item = dataSnapshot.getValue(Item.class);
                 Log.v(TAG, item.toString());
             }
@@ -109,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void removeReference(DatabaseReference reference) {
+        reference.removeValue();
+    }
+
     public void resetPassword(String email) {
         firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -116,6 +121,17 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Reset email sent.");
                 }
+            }
+        });
+    }
+
+    private void saveItem(Item i, String route, String key) {
+        Map<String, Object> saveItem = new HashMap<>();
+        saveItem.put(route + key + "/", i.toMap());
+        databaseReference.updateChildren(saveItem).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.v(TAG, "Resultado: " + task.isSuccessful());
             }
         });
     }
@@ -195,6 +211,15 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.v(TAG, task.getException().toString());
                 }
+            }
+        });
+    }
+
+    public void updateReference(Item item, DatabaseReference reference) {
+        reference.setValue(item, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+
             }
         });
     }
